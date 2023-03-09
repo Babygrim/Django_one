@@ -1,0 +1,28 @@
+
+<form method="post">
+  {% csrf_token %}
+  <label for="product_name">Введіть назву продукту:</label><br>
+  <input type="text" id="product_name" name="product_name" required><br><br>
+  
+
+
+<div class = "checkbox-group required" required>
+  <input type="checkbox" id = "shop1" name="shop" value="Сільпо">
+  <label for="shop1"> Сільпо </label><br>
+  <input type="checkbox" id = "shop2" name= "shop" value="Арсен">
+  <label for="shop2"> Арсен </label><br>
+  <input type="checkbox" id = "shop3" name="shop" value="АТБ">
+  <label for="shop3">  АТБ </label><br><br>
+</div>
+
+<input type="submit" value="Отримати ціну">
+  
+</form>
+<!-- {% if not mylist %}
+    <h2> Такого товару немає</h2>
+{% else %} -->
+    {% for i, x, z, m in mylist %}
+        <img src = "{{ m }}">
+        <h2>Назва продукту: {{ i }}, Ціна: {{ x }}, Об'єм: {{ z }}</h2>
+    {% endfor %}
+<!-- {% endif %} -->

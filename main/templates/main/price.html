@@ -1,0 +1,7 @@
+{% if not mylist %}
+    <h2>Price was not found</h2>
+{% else %}
+    {% for i, x, z in mylist %}
+        <h2>Назва продукту: {{ i }}, Ціна: {{ x }}, Вага: {{ z }}</h2>
+    {% endfor %}
+{% endif %}
