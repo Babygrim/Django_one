@@ -1,7 +1,55 @@
-{% if not mylist %}
-    <h2>Price was not found</h2>
-{% else %}
-    {% for i, x, z in mylist %}
-        <h2>Назва продукту: {{ i }}, Ціна: {{ x }}, Вага: {{ z }}</h2>
-    {% endfor %}
-{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label for="product_name">Введіть назву продукту:</label><br>
+    <input type="text" id="product_name" name="product_name" required><br><br>
+    
+  
+  
+  <div class = "checkbox-group required" required>
+    <input type="checkbox" id = "shop1" name="shop" value="Сільпо">
+    <label for="shop1"> Сільпо </label><br>
+    <input type="checkbox" id = "shop2" name= "shop" value="Метро">
+    <label for="shop2"> Метро </label><br>
+    <input type="checkbox" id = "shop3" name="shop" value="АТБ">
+    <label for="shop3">  АТБ </label><br><br>
+  </div>
+  
+  <input type="submit" value="Отримати ціну">
+  
+  </form>
+  
+  {% block content %}
+    {% if mylist_silpo%}
+      <h2>Сільпо</h2>
+      {% for i, x, z, m in mylist_silpo %}
+          <img src = "{{ m }}">
+          <h2>Назва продукту: {{ i }}, Ціна: {{ x }}, Об'єм: {{ z }}</h2>
+      {% endfor %}
+      {% else %}
+        <h2>В Сільпо ніц не найшли</h2>
+    {% endif %}
+    
+    {% if mylist_metro%}
+      <h2>Арсен</h2>
+      {% for i, x, z, m in mylist_metro %}
+          <img src = "{{ m }}">
+          <h2>Назва продукту: {{ i }}, Ціна: {{ x }}, Об'єм: {{ z }}</h2>
+      {% endfor %}
+      {% else %}
+        <h2>В Метро ніц не найшли</h2>
+    {% endif %}
+  
+    {% if mylist_atb%}
+      <h2>АТБ</h2>
+      {% for i, x, m in mylist_atb %}
+          <img src = "{{ m }}">
+          <h2>Назва продукту: {{ i }}, Ціна: {{ x }}</h2>
+      {% endfor %}
+      {% else %}
+        <h2>В АТБ ніц не найшли</h2>
+    {% endif %}
+  {% endblock %}
+  
+  
+  
