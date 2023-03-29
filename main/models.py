@@ -12,8 +12,6 @@ class search_engine_silpo(models.Model):
     class Meta:
         ordering = ['-search_date']
     
-    def __str__(self):
-        return self.shop_name
     
 class search_engine_glove(models.Model):
     search_request = models.CharField(max_length=200)
@@ -25,8 +23,7 @@ class search_engine_glove(models.Model):
     class Meta:
         ordering = ['-search_date']
     
-    def __str__(self):
-        return self.shop_name
+
     
 class search_engine_atb(models.Model):
     search_request = models.CharField(max_length=200)
@@ -37,7 +34,5 @@ class search_engine_atb(models.Model):
     
     class Meta:
         ordering = ['-search_date']
-    
-    def __str__(self):
-        return self.shop_name
+
     
