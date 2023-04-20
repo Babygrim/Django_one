@@ -1,4 +1,6 @@
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,35 +8,75 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
-    <link rel="stylesheet" href="{% static 'main/bootstrap.min.css' %}">
-    <title>{% block title%} {% endblock%}</title>
+    <link href="{% static 'main/boxicons.min.css' %}" rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <title>{% block title%} Shop {% endblock%}</title>
 </head>
 <body>
-    <nav class="py-3 bg-info  ">
-        <div class="d-flex justify-content-center ">
-          <ul class="nav justify-content-center">
-            <li class="nav-item"><a href="/" class=" text-muted nav-link link-dark px-2 disable" aria-current="page" >Home</a></li>
-            <!-- <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li> -->
-            <li class="nav-item"><a href="/about" class="nav-link link-dark px-2">About</a></li>
-          </ul>
+   
          
+       <header class="header">
+        <div class="logo">
+          <h2>Вітаємо</h2>
         </div>
-      </nav>
-    <header class="py-3 mb-4  bg-warning">
-        <div class="container d-flex flex-wrap justify-content-center">
-          <a href="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-            <span class="fs-4">Shop-cheap</span>
-          </a>
-          <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-          </form>
-        </div>
-      </header>
-    
-    <main>
-        {% block content%} {% endblock%}
+        
+        <nav>
+
+          <a href = "#" class = "link">Рукавичка</a>
+          <a href = "#silpo" class = "link">Сільпо</a>
+          <a href = "#" class = "link">AТБ</a>
+          <a href = "/about" class = "link">   Про</a>
+        </nav>
+
+
+       </header>
+       <main>
+        <section class = "search-content">
+          <div class="search">
+            <form class="form" method="POST">
+              {% csrf_token %}
+              <div class = "input-box">
+              
+                <input type="text" id="product_name" name="product_name" class="form-control" placeholder="Пошук..." aria-label="Search" required>
+                <button class = "btn"><i class='bx bx-search'></i></button>
+              </div>
+
+              .
+              <div class="checkbox">
+                <div class = "checkbox-content">
+                  <input type="checkbox" id = "shop1" name="shop" value="Сільпо">
+                  <label for="shop1"> Сільпо </label>
+                </div>
+                <div class = "checkbox-content">
+                <input type="checkbox" id = "shop2" name= "shop" value="Рукавичка">
+                <label for="shop2"> Рукавичка </label>
+                </div>
+                <div class = "checkbox-content">
+                <input type="checkbox" id = "shop3" name="shop" value="АТБ">
+                <label for="shop3">  АТБ </label>
+                </div>
+              </div>
+              
+            </form>
+
+          </div>
+        </section>
+
+       
+                
+
+      
+
+
+        <div class = "content-shop">
+        {% block content%} 
+        
+        
+        
+        {% endblock%}
+
+      </div>
     </main>
 
 

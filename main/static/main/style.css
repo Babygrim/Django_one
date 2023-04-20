@@ -1,5 +1,206 @@
 /* this must be style for project  */
-body{
-    margin: 0;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0.7); 
+  width: 4px;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.7); 
+}
+
+
+:root{
+  --bg-color: #1f242d;
+  --second-bg-color: #323946;
+  --text-color: #fff;
+  --main-color: #0ef;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  height: 10vh;
+  width: 100%;
+  background: #1F242D;
+  color: #fff;
+}
+header h2{
+  margin-left: 2vw;
+  font-size: 3em;
+}
+
+
+
+
+.link{
+    padding-right: 2.2em;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.8em;
+}
+
+
+.link:hover{
+    color:var( --main-color);
+}
+
+
+
+
+section{
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main{
+  
+  width: 100%;
+  background: #313946;
+
+}
+.content-shop{
+  
+  width: 100vw;
+  background: #313946;
+
+}
+
+.search{
+    height: 40vh;
+    width: 60vw;
+    background: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.5rem;
+}
+
+.input-box input{
+  width: 40vw;
+  height: 10vh;
+  padding: 1.5rem;
+  font-size: 1.6rem;
+  color:#000;
+  background: #fff;
+  border-radius: 1.5rem    0 0  1.5rem;
+  margin: .7rem 0;
+  
+}
+.input-box{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+}
+
+.btn{
+  width: 5vw;
+  background-color: #0ef;
+  border-radius: 0 1.5rem 1.5rem 0;
+  height: 10vh;
+  padding: 1.5rem;
+  font-size: 1.1rem;
+}
+i{
+  font-size: 2.5em;
+  color:#000;
+}
+
+
+.checkbox{
+  height:10vh;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.checkbox-content{
+  display: flex;
+  justify-content: start;
+  align-items:  center;
+}
+
+.checkbox input{
+    height: 2vh;
+    width: 2vh;
+    border: 50%;
+
+}
+
+.checkbox label{
+  color:#fff;
+  padding: .5vw;
+  font-size: 1.2em;
+}
+
+
+.shop{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+
+  
+  background: var(--bg-color);
+
+}
+
+.content h2{
+  display: block;
+  width: 20vw;
+  height: 5vh;
+  background: #333a477d;
+  font-size: 2em;
+  color:var(--main-color);
+}
+
+
+
+.shop .content{
+  height: 35vh;
+  width: 20vw;
+}
+
+image{
+  height: 25vh;
+  width: 25vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img{
+  display: block;
+  height: 25vh;
+}
+
+.card-body p{
+  display: block;
+  width: 20vw;
+  height: 5vh;
+  background: #333a477d;
+  font-size: 2em;
+  color:var(--main-color);
+
 }

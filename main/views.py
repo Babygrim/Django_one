@@ -1,15 +1,13 @@
 from django.shortcuts import render, HttpResponse
-import django
-django.setup()
 from django.db.models import F, Value
 from django.db.models.functions import Concat
+import django
+django.setup()
 from main import models
 from .models import *
 import time
 import multiprocessing 
-import numpy as np
-from bs4 import BeautifulSoup
-from .forms import ProductForm
+import re
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -23,6 +21,7 @@ def about_page(request):
     return render(request, 'main/about.html')
 
 def parse_glove(product_name, manage):
+    print('parsing glove')
     response_title = []
     response_price = []
     response_pictures = []
@@ -35,20 +34,23 @@ def parse_glove(product_name, manage):
     driver = webdriver.Chrome(options=options)
     driver.get(f'https://market.rukavychka.ua/search/?search={product_name}') 
     
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "content")))
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "product-layout")))
+   # WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "content")))
+    #WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "product-layout")))
     
     for tit in driver.find_elements(By.CLASS_NAME, "product-layout"):
         price = tit.find_element(By.CLASS_NAME, "fm-module-price-new")
         if price:
             image = tit.find_element(By.TAG_NAME, "img")
             product_tit = image.get_attribute("alt")
-            if search_engine_glove.objects.filter(product_name = image.get_attribute("alt")).exists():
-                search_engine_glove.objects.filter(product_name = image.get_attribute("alt")).update(search_date = datetime.date.today(), product_price = price.text, search_request = Concat(F('search_request'), Value(f'{product_name}')))
-            else:
-                db_object = search_engine_glove(search_request = product_name, product_name = product_tit.capitalize(), product_price = price.text,  product_image = image.get_attribute("src"))
-                db_object.save()
-            response_price.append(price.text)
+            quantity = tit.find_element(By.CLASS_NAME, "form-control")
+            quantity_number = quantity.get_attribute("value")
+            data = (price.text).split(" ")
+            coefficient = 1 / float(quantity_number)
+            final_pr = float(data[0]) * coefficient
+            pr_string = str(final_pr)+" "+data[1]
+            db_object = search_engine_glove(search_request = product_name, product_name = product_tit.capitalize(), product_price = pr_string,  product_image = image.get_attribute("src"))
+            db_object.save()
+            response_price.append(pr_string)
             response_title.append(product_tit.capitalize())
             response_pictures.append(image.get_attribute("src"))
         else:
@@ -59,6 +61,7 @@ def parse_glove(product_name, manage):
     manage.put(mylist)
     
 def parse_atb(product_name, manage):
+    print('parsing atb')
     response_title = []
     response_price = []
     response_pictures = []
@@ -78,13 +81,8 @@ def parse_atb(product_name, manage):
             continue
         if price:
             image = tit.find_element(By.TAG_NAME, "img")
-            if search_engine_atb.objects.filter(product_name = image.get_attribute("alt")).exists():
-                search_engine_atb.objects.filter(product_name = image.get_attribute("alt")).update(search_date = datetime.date.today())
-                search_engine_atb.objects.filter(product_name = image.get_attribute("alt")).update(product_price = price.text)
-                search_engine_silpo.objects.filter(product_name = image.get_attribute("alt")).update(search_request = Concat(F('search_request'), Value(f'{product_name}')))
-            else:
-                db_object = search_engine_atb(search_request = product_name, product_name = image.get_attribute("alt"), product_price = price.text,  product_image = image.get_attribute("src"))
-                db_object.save()
+            db_object = search_engine_atb(search_request = product_name, product_name = image.get_attribute("alt"), product_price = price.text,  product_image = image.get_attribute("src"))
+            db_object.save()
             response_price.append(price.text)
             response_title.append(image.get_attribute("alt"))
             response_pictures.append(image.get_attribute("src"))
@@ -96,6 +94,7 @@ def parse_atb(product_name, manage):
     manage.put(mylist)
     
 def parse_silpo(product_name, manage):
+    print('parsing in silpo ')
     response_title = []
     response_price = []
     response_pictures = []
@@ -107,20 +106,14 @@ def parse_silpo(product_name, manage):
     options.add_argument("window-size=1920,1080")
     driver = webdriver.Chrome('C:\\Users\\Pogkopi\\Downloads\\chromedriver', options=options)
     driver.get(f'https://shop.silpo.ua/search/all?find={product_name}')
-    time.sleep(7)
+    TEST_SLEEP_TIME = 0.5
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME,  "lazyload-wrapper")))
     
-    driver.execute_script("window.scrollTo(0, 1000);")
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(1000, 1400);")
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(1400, 1800);")
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(1800, 2200);")
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(2600, 3000);")
-    time.sleep(1)
-    driver.execute_script("window.scrollTo(3000, document.body.scrollHeight);")
-    time.sleep(1)
+    while True:
+        driver.execute_script("window.scrollBy(0, 500);")
+        time.sleep(TEST_SLEEP_TIME)
+        if driver.execute_script("return window.pageYOffset + window.innerHeight >= document.body.scrollHeight;"):
+           break 
     
     elements = driver.find_elements(By.CLASS_NAME, "lazyload-wrapper")
     for tit in elements:
@@ -133,14 +126,8 @@ def parse_silpo(product_name, manage):
             title = tit.find_element(By.CLASS_NAME, "product-title")
             image = tit.find_element(By.TAG_NAME, "img")
             image_source = image.get_attribute("src")
-            if search_engine_silpo.objects.filter(product_name = (title.text + ', ' + volume.text)).exists():
-                search_engine_silpo.objects.filter(product_name =(title.text + ', ' + volume.text)).update(search_date = datetime.date.today(), 
-                                                                                                           product_price = price.text, 
-                                                                                                           search_request = Concat(F('search_request'), Value(f'{product_name}')))
-            else:
-                db_object = search_engine_silpo(search_request = product_name, product_name = (title.text + ', ' + volume.text), product_price = price.text, product_image = image_source)
-                db_object.save()
-                
+            db_object = search_engine_silpo(search_request = product_name, product_name = (title.text + ', ' + volume.text), product_price = price.text, product_image = image_source)
+            db_object.save()
             response_price.append(price.text)
             response_title.append(title.text + ', ' + volume.text)
             response_pictures.append(image_source)
@@ -403,10 +390,7 @@ def search_db(request):
                         mprocesses.append(p3)
                         atb = True
                         continue
-                   
-        for p in mprocesses:
-            p.join()     
-               
+                          
         if atb:
             mylist_atb = manage_atb.get()
         if glove:
@@ -414,8 +398,11 @@ def search_db(request):
         if silpo:
             mylist_silpo = manage_silpo.get()
             
+        for p in mprocesses:
+            p.join() 
+            
         context = {'mylist_atb': mylist_atb, 'mylist_glove': mylist_glove, 'mylist_silpo': mylist_silpo}      
                                            
         return render(request, 'main/price.html', context)                                  
     else:
-        return render(request, 'main/get_price.html')
+        return render(request, 'main/layout.html')
