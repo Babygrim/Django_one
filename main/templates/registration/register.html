@@ -24,7 +24,7 @@
     {% if form.errors %}
       {% for field in form %}
            {% for error in field.errors %}
-                <script type = "text/javascript" src="{% static 'main/update.js'%}"></script>
+                <script type = "text/javascript" src="{% static 'main/upper_message_window.js'%}"></script>
                 <script>
                     FbotonOn("{{ error|escape }}")
                 </script>

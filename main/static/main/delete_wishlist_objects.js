@@ -51,8 +51,8 @@ function delete_wishlist_item(user, shop, item){
         return response.json()
     })
     .then((data) => {
-        var url = '/check_wish_list/'
-        fetch(url, {
+        let url1 = '/check_wish_list/'
+        fetch(url1, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

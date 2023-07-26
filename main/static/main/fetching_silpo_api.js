@@ -1,9 +1,9 @@
 var search_form =  document.getElementById("search_form")
-var chekbpox1 = document.getElementById('shop1')
+var chekbox1 = document.getElementById('shop1')
 
 
 search_form.addEventListener('submit', function(e){
-	if (chekbpox1.checked == true){
+	if (chekbox1.checked == true){
 		e.preventDefault();
 		search_request = document.getElementById('product_name')
 		// silpo
