@@ -32,6 +32,14 @@ password1.addEventListener("input", function(){
         password1.style.borderColor = "#9ecaed";
         password1.style.boxShadow = "0 0 1em #9ecaed";
     }
+    else if (password1.value == password2.value){
+        password2.style.borderColor = "#00af17";
+        password2.style.boxShadow = "0 0 1em #00af17";
+    }
+    else if (password1.value != password2.value && password2.value.length > 0){
+        password2.style.borderColor = "#ff4a4a";
+        password2.style.boxShadow = "0 0 1em #ff4a4a";
+    }
 });
 
 password2.addEventListener("input", function(){
@@ -49,25 +57,15 @@ password2.addEventListener("input", function(){
     }
 });
 
-username.addEventListener("blur", function(){
-    if (username.value == ""){
-        username.style.borderColor = "";
-        username.style.boxShadow = "";
-    }
+let elementsArray = [password1, password2, username]
+
+elementsArray.forEach(function(elem) {
+    elem.addEventListener("input", function() {
+        if (elem.value == ""){
+            elem.style.borderColor = "";
+            elem.style.boxShadow = "";
+        }
+    });
 });
 
-
-password1.addEventListener("blur", function(){
-    if (password1.value == "") {
-        password1.style.borderColor = "";
-        password1.style.boxShadow = "";
-    }
-});
-
-password2.addEventListener("blur", function(){
-    if (password2.value == "") {
-        password2.style.borderColor = "";
-        password2.style.boxShadow = "";
-    }
-});
 
