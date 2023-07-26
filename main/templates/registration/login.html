@@ -1,0 +1,65 @@
+{% load static %}
+{% load widget_tweaks %} 
+
+
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT Sans Narrow|Poiret One">
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <link href="{% static 'main/boxicons.min.css' %}" rel='stylesheet'>
+    <title>{% block title%} Shop {% endblock%}</title>
+    
+
+</head>
+<body>
+   
+         
+       <header class="header">
+        <div class="logo">
+          <button class="logo-button" onclick="location.href = '/'"><h2>Django-project-one</h2></button>
+        </div>
+        <nav>
+          <a href = "/" class = "link">Додому</a>
+        </nav>
+       </header>
+       {% block messages%}
+        <div class="messages" id="hidden-div" style="visibility: hidden; opacity: 0;">
+            <div class="alert">
+              <p id="texto"></p>
+            </div>
+          </div>
+        {% endblock %}
+
+       <main class ="main-login">
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+                  <script type = "text/javascript" src="{% static 'main/update.js'%}"></script>
+                  <script>
+                      FbotonOn("{{ error }}")
+                  </script>
+              {% endfor %}
+        {% endif %}
+            <form class="login-form" method="POST">
+              {% csrf_token %}
+              <h2 class = "login-title">Вхід</h2>
+                  {% render_field form.username placeholder="Логін" autocomplete="off" class+="register-field"  id="reg-username"%}
+                  {% render_field form.password placeholder="Пароль" autocomplete="off" class+="register-field"  id="reg-password"%}
+                 <div class = btn-login>     
+                   <button type="submit" class = "log-button" id="log-button">Увійти</button>
+                   <button  onclick= "location.href = '/register/';" id = "link">Зареєструватись</button>
+                 </div>
+                </form>
+                <!-- <input type="text" id="product_name" name="product_name" class="form-control" placeholder="Пошук..." aria-label="Search" required> -->
+              </div>
+              
+            </form>
+
+        
+
+       
+                
+
+    </main>
+</body>
+</html> 
+

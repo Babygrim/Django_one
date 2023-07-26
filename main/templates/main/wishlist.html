@@ -1,0 +1,173 @@
+{% extends "main/layout.html"%}
+{% load static %}
+<html> 
+  <head>
+    {% block scripts%}
+    <script type = "text/javascript" src="{% static 'main/delete.js'%}"></script>
+    {% endblock %}
+  </head>
+  <body>
+       <header class="header">
+        <div class="logo">
+          <h2>Django-project-one</h2>
+        </div>
+        {% block navigation%}
+        <nav class = "navigation">
+          
+          <button  data-user="{{user.id}}" class = "link del but44" id="wishlist-delete">Очистити бажане</button> 
+          <a class="link" href="javascript:history.back()">Назад</a>
+        </nav>
+        {% endblock %}
+       </header>
+
+       {% block messages%}
+        <div class="messages" id="hidden-div" style="visibility: hidden; opacity: 0;">
+          <div class="alert">
+            <p id="texto"></p>
+          </div>
+        </div>
+        {% endblock %}
+       <main>
+
+        {% block content %}
+        <div id="updateModal" class="modal_update">
+          <div class="update-frame" id="update-frame">
+            <span class="close qty update">&times;</span>
+                <h1 id="quantity-caption-update"></h1>
+                <div class="style_for_update_buttons">
+                  <button class="decrease-qty-update"><i class='bx bx-left-arrow'></i></button> 
+                  <input id="qty-value-update" name="number" type="text" readonly value=1 style="width: 8vh;">
+                  <button class="increase-qty-update"><i class='bx bx-right-arrow'></i></button>  
+                </div>
+                <button class="submit-qty-update" id="submit-qty-update">Ок</button>
+           </div>
+        </div>
+        {% endblock %}
+		
+
+	{% block wishlist-info %}	
+	<div class="wishlist-info">
+		<div class="query-value-tag">
+		<h1 class="query-value">Продукт</h1>
+		</div>
+		<div class="silpo">
+		<h1 class="shop_name">Сільпо</h1>
+		<h1 class="total_price_tag">Загальна ціна - {{ price_silpo }} грн</h1>
+		</div>
+		<div class="glove">
+		<h1 class="shop_name">Рукавичка</h1>
+		<h1 class="total_price_tag">Загальна ціна - {{ price_glove }} грн</h1>
+		</div>
+		<div class="atb">
+		<h1 class="shop_name">АТБ</h1>
+		<h1 class="total_price_tag">Загальна ціна - {{ price_atb }} грн</h1>
+		</div>
+	</div>
+	{% endblock %}
+
+	
+	
+
+	{% block wishlist %}	
+		<div id="swapModal" class="modal_swap">
+			<div class="swap-content" id="swap-content">
+				<div class="swap-modal-navigation">
+					<span class="close swap">&times;</span>
+					<h1>Замінити на:</h1>
+				</div>
+					<div class="swap-cards-content" id="swap-cards-content">
+
+				</div>
+			</div>
+		</div>
+	
+
+
+		<input type="hidden" id="hidden_query_array" value="{{query}}">
+		
+		<div class="wishlist-content">
+		{% for search in query%}
+		<div class="query_search_content">	
+			<h1 class="query_name" id="searchValue">{{search}}</h1>
+		</div>
+				<div class="wishlist-card" id = "silpo_wishlist">
+				{% for elem in mylist_silpo %}
+				{% if elem.0.search_request  == search  %}
+					<div class="content-wishlist">
+						<div class="image">
+						<img src="{{ elem.0.product_image }}">
+						</div>
+				
+						<div class="card-body_wishlist">
+						<span class="price element">{{ elem.0.product_price }} грн</span>
+						<h2 class="price-to-change">{{ elem.0.product_name }}</h2>
+						<h2 class="quantity element"></h2>
+						<input type="hidden" class="hidden_search" value="{{elem.0.search_request}}">
+						<input type="hidden" class="hidden_qty" value="{{elem.1}}">
+						<button class = "card-delete-btn" type="submit" data-user="{{user.id}}" data-shop="silpo" data-item="{{elem.0.id}}" id="card-delete-btn">Видалити</button>
+						<button class = "card-update-btn" type="submit" data-user="{{user.id}}" data-shop="silpo" data-item="{{elem.0.id}}" data-qty="{{elem.1}}" data-name_item="{{elem.0.product_name}}" data-price="{{elem.0.product_price}}" id="card-edit-btn">Редагувати</button>
+						<button class = "card-edit-btn" type="submit" data-user="{{user.id}}" data-element="{{elem.0.id}}" data-shop="silpo" data-search="{{elem.0.search_request}}">Замінити</button>
+						</div>
+						
+					</div>
+					{% endif %}
+					{% endfor %}
+				
+				</div>
+				
+			
+			
+				<div class="wishlist-card" id = "glove_wishlist">
+				{% for elem in mylist_glove %}
+				{% if elem.0.search_request  == search  %}
+					<div class="content-wishlist">
+						<div class="image">
+						<img src="{{ elem.0.product_image}}">
+						</div>
+					
+						<div class="card-body_wishlist">
+						<span class="price element">{{ elem.0.product_price }}</span>
+						<h2 class="price-to-change">{{ elem.0.product_name }}</h2>
+						<h2 class="quantity element"></h2>
+						<input type="hidden" class="hidden_search" value="{{elem.0.search_request}}">
+						<input type="hidden" class="hidden_qty" value="{{elem.1}}">
+						<button class = "card-delete-btn" type="submit" data-user="{{user.id}}" data-shop="glove" data-item="{{elem.0.id}}" id="card-delete-btn">Видалити</button>
+						<button class = "card-update-btn" type="submit" data-user="{{user.id}}" data-shop="glove" data-item="{{elem.0.id}}" data-qty="{{elem.1}}" data-name_item="{{elem.0.product_name}}" data-price="{{elem.0.product_price}}" id="card-edit-btn">Редагувати</button>
+						<button class = "card-edit-btn" type="submit" data-user="{{user.id}}" data-element="{{elem.0.id}}" data-shop="glove" data-search="{{elem.0.search_request}}">Замінити</button>	
+					</div>
+					</div>
+				{% endif %}
+				{% endfor %}
+			
+				</div>
+			
+			
+			
+			<div class="wishlist-card" id = "atb_wishlist">
+				{% for elem in mylist_atb %}
+				{% if elem.0.search_request  == search %}
+					<div class="content-wishlist">
+						<div class="image">
+							<img src="{{ elem.0.product_image }}">
+						</div>
+					
+						<div class="card-body_wishlist">
+							<span class="price element">{{ elem.0.product_price }}</span>
+							<h2 class="price-to-change">{{ elem.0.product_name }}</h2>
+							<h2 class="quantity element"></h2>
+							<input type="hidden" class="hidden_search" value="{{elem.0.search_request}}">
+							<input type="hidden" class="hidden_qty" value="{{elem.1}}">
+							<button class = "card-delete-btn" type="submit" data-user="{{user.id}}" data-shop="atb" data-item="{{elem.0.id}}" id="card-delete-btn">Видалити</button>
+							<button class = "card-update-btn" type="submit" data-user="{{user.id}}" data-shop="atb" data-item="{{elem.0.id}}" data-qty="{{elem.1}}" data-name_item="{{elem.0.product_name}}" data-price="{{elem.0.product_price}}" id="card-edit-btn">Редагувати</button>
+							<button class = "card-edit-btn" type="submit" data-user="{{user.id}}" data-element="{{elem.0.id}}" data-shop="atb" data-search="{{elem.0.search_request}}">Замінити</button>
+						</div>
+					</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endfor %}	
+	</div>
+	{% endblock %}
+    </main>
+  </body>
+</html>

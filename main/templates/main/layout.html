@@ -8,66 +8,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poppins&subset=latin,cyrillic">
     <link href="{% static 'main/boxicons.min.css' %}" rel='stylesheet'>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
     <title>{% block title%} Shop {% endblock%}</title>
+
 </head>
 <body>
-   
+ 
+        
          
        <header class="header">
         <div class="logo">
-          <h2>Вітаємо</h2>
+          <button class="logo-button" onclick="location.href = '/'"><h2>Django-project-one</h2></button>
         </div>
-        
-        <nav>
+        <nav class = "navigation"> 
+        {% block navigation %}
 
-          <a href = "#" class = "link">Рукавичка</a>
-          <a href = "#silpo" class = "link">Сільпо</a>
-          <a href = "#" class = "link">AТБ</a>
-          <a href = "/about" class = "link">   Про</a>
+
+        {% endblock %}
         </nav>
-
-
        </header>
-       <main>
-        <section class = "search-content">
-          <div class="search">
-            <form class="form" method="POST">
-              {% csrf_token %}
-              <div class = "input-box">
-              
-                <input type="text" id="product_name" name="product_name" class="form-control" placeholder="Пошук..." aria-label="Search" required>
-                <button class = "btn"><i class='bx bx-search'></i></button>
-              </div>
+            {% block messages%}
 
-              .
-              <div class="checkbox">
-                <div class = "checkbox-content">
-                  <input type="checkbox" id = "shop1" name="shop" value="Сільпо">
-                  <label for="shop1"> Сільпо </label>
-                </div>
-                <div class = "checkbox-content">
-                <input type="checkbox" id = "shop2" name= "shop" value="Рукавичка">
-                <label for="shop2"> Рукавичка </label>
-                </div>
-                <div class = "checkbox-content">
-                <input type="checkbox" id = "shop3" name="shop" value="АТБ">
-                <label for="shop3">  АТБ </label>
-                </div>
-              </div>
-              
-            </form>
 
-          </div>
-        </section>
+            {% endblock %}
+      <main>
+        <div class="registration">
+        {% block form%}
 
-       
-                
+        {% endblock %}
+        </div>
 
-      
+        
+        {% block wishlist-info %}
 
+        {% endblock %}	
 
         <div class = "content-shop">
         {% block content%} 
@@ -75,13 +51,38 @@
         
         
         {% endblock%}
-
-      </div>
+        </div>
+        {% block wishlist%} 
+        
+        {% endblock%}
     </main>
-
-
-    <footer>
-
-    </footer>
 </body>
 </html>
+<script type = "text/javascript" src="{% static 'main/update.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/delete.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/modal_qty.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/login_anim.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/modal_map.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/edit.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/highlight.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/test_api.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/swap.js'%}"></script>
+<script type = "text/javascript" src="{% static 'main/dynamic.js'%}"></script>
+<script type = "text/javascript">
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+</script>

@@ -1,21 +1,115 @@
 {% extends "main/layout.html"%}
 {% load static %}
 
+<html>
+  <header>
+    {% block navigation %}
+    <nav class = "navigation">  
+      {% if mylist_silpo%}
+      <a href = "#silpo" class = "link">Сільпо</a>
+      {% endif %}
+      {% if mylist_glove%}
+      <a href = "#glove" class = "link">Рукавичка</a>
+      {% endif %}
+      {% if mylist_atb%}
+      <a href = "#ATB" class = "link">AТБ</a>
+      {% endif %}
+      <a href = "#search" class = "link">Додому</a>
+      <!-- <a href = "/about" class = "link">Про</a> -->
+      {% if user.is_authenticated %}
+        <button  data-user="{{user.id}}" class = "link wish but44">Бажане</button>  
+        <a href="{% url 'logout' %}" class = "link">Вийти</a>
+      {% else %}
+        <a href="{% url 'login' %}" class = "link">Увійти</a>
+      {% endif %} 
+    </nav>
+    {% endblock %}
+  </header>
 
+  {% block messages%}
+  <div class="messages" id="hidden-div" style="visibility: hidden; opacity: 0;">
+    <div class="alert">
+      <p id="texto"></p>
+    </div>
+  </div>
+  {% endblock %}
+
+<main>
+
+  
   {% block content %}
+  <div id="mapModal" class="modal">
+      <div class="iframe-content">
+          <span class="close map">&times;</span>
+      <iframe id="mapFrame" src="" width="100%" height="90%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <div id="qtyModal" class="modal_qty">
+    <div class="qty-frame" id="qty-frame">
+      <span class="close qty">&times;</span>
+          <h1 id="quantity-caption"></h1>
+          <div class="style_for_qty_buttons">
+            <button class="decrease-qty"><i class='bx bx-left-arrow'></i></button> 
+            <input id="qty-value" name="number" type="text" readonly value=1 style="width: 8vh;">
+            <button class="increase-qty"><i class='bx bx-right-arrow'></i></button>  
+          </div>
+          <button class="submit-qty" id="submit-qty">Ок</button>
+     </div>
+  </div>
+
+  <section class = "search-content" id="search">
+    <div class="search">
+      <form class="form" method="POST" action="/price/" id="search_form">
+        {% csrf_token %}
+        <div class = "input-box">
+          <input type="text" id="product_name" name="product_name" class="input-control" placeholder="Пошук..." aria-label="Search" required autocomplete="off">
+          <button class= "btn-search" id=""><i class='bx bx-search'></i></button>
+        </div>
+
+        
+        <div class="checkbox">
+          <div class = "checkbox-content">
+            <input type="checkbox" id = "shop1" name="shop" value="Сільпо" checked>
+            <label for="shop1"> Сільпо </label>
+          </div>
+          <div class = "checkbox-content">
+          <input type="checkbox" id = "shop2" name= "shop" value="Рукавичка" checked> 
+          <label for="shop2"> Рукавичка </label>
+          </div>
+          <div class = "checkbox-content">
+          <input type="checkbox" id = "shop3" name="shop" value="АТБ" checked>
+          <label for="shop3">  АТБ </label>
+          </div>
+        </div>
+        
+      </form>
+
+    </div>
+  </section>
+  
     {% if mylist_silpo%}
-   <div class="shop" id = "silpo">
-      <h2>Сільпо</h2>
-      {% for i, x, m in mylist_silpo %}
+    <h1>Сільпо</h1>
+    <div class="map-button-holder">
+    <button class="map-btn" data-shop="silpo"><h2>Де магазини?</h2></button>
+    </div>
+    <div class="shop" id = "silpo">
+      {% for elem in mylist_silpo %}
       <div class="content">
             <div class="image">
-              <img src="{{ m }}">
+              <img src="{{ elem.product_image }}">
             </div>
     
             <div class="card-body">
-              <h2>Title: {{ i }}</h2>
-              <p>Price: {{ x }}</p>
+              <span>{{ elem.product_price }} грн</span>
+              <h2 class="price-to-change">{{ elem.product_name }}</h2>
+              {% if user.is_authenticated %}
+                <button data-product="{{elem.id}}" data-shop="silpo" data-user="{{user.id}}" data-item="{{elem.product_name}}" data-price="{{elem.product_price}}" class="button add-to-cart">Додати в бажане</button>
+              {% else %}
+                <button class = "button" onclick= "location.href = '/login/login';">Додати в бажане</button>
+              {% endif %}
             </div>
+            
       </div>
         {% endfor %}
       
@@ -23,36 +117,54 @@
     {% endif %}
     
     {% if mylist_glove%}
+    <h1>Рукавичка</h1>
+    <div class="map-button-holder">
+    <button class="map-btn" data-shop="glove"><h2>Де магазини?</h2></button>
+  </div>
     <div class="shop" id = "glove">
-      <h2>Сільпо</h2>
-      {% for i, x, m in mylist_glove %}
+      {% for elem in mylist_glove %}
       <div class="content">
         <div class="image">
-          <img src="{{ m }}">
+          <img src="{{ elem.product_image}}">
         </div>
     
         <div class="card-body">
-          <h2>Title: {{ i }}</h2>
-          <p>Price: {{ x }}</p>
+          <span>{{ elem.product_price }}</span>
+          <h2 class="price-to-change">{{ elem.product_name }}</h2>
+          {% if user.is_authenticated %}
+           <button data-product="{{elem.id}}" data-shop="glove" data-user="{{user.id}}" data-item="{{elem.product_name}}" data-price="{{elem.product_price}}" class="button add-to-cart">Додати в бажане</button>
+          {% else %}
+            <button class = "button" onclick= "location.href = '/login/login';">Додати в бажане</button>
+          {% endif %}
       </div>
     </div>
       {% endfor %}
       {% endif %}
     </div>
     
-  
+    <br>
+    <br>
+    <br>
     {% if mylist_atb%}
+    <h1>АТБ</h1>
+    <div class="map-button-holder">
+    <button class="map-btn" data-shop="atb"><h2>Де магазини?</h2></button>
+  </div>
     <div class="shop" id = "ATB">
-      <h2>Сільпо</h2>
-      {% for i, x, m in mylist_atb %}
+      {% for elem in mylist_atb %}
       <div class="content">
         <div class="image">
-          <img src="{{ m }}">
+          <img src="{{ elem.product_image }}">
         </div>
     
         <div class="card-body">
-          <h2>Title: {{ i }}</h2>
-          <p>Price: {{ x }}</p>
+          <span>{{ elem.product_price }}</span>
+          <h2 class="price-to-change">{{ elem.product_name }}</h2>
+          {% if user.is_authenticated %}
+            <button data-product="{{elem.id}}" data-shop="atb" data-user="{{user.id}}" data-item="{{elem.product_name}}" data-price="{{elem.product_price}}" class="button add-to-cart">Додати в бажане</button>
+          {% else %}
+                <button class = "button" onclick= "location.href = '/login/login';">Додати в бажане</button>
+          {% endif %}
       </div>
     </div>
       {% endfor %}
@@ -63,5 +175,12 @@
     
   {% endblock %}
   
+    
+</main>
+</html>
+
+
+
+
   
   

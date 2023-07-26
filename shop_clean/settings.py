@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #my settings 
     'main',
+    'widget_tweaks',
 
 ]
 
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'shop_clean.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "main/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,11 +124,13 @@ USE_TZ = True
 
 
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 #my settings
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

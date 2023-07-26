@@ -1,0 +1,50 @@
+{% extends 'main/layout.html'%}
+{% load static%}
+{% load widget_tweaks %}
+
+
+{% block form%}
+
+    {% block navigation %}
+    <nav class = "navigation">  
+      <a href = "/login/login/" class = "link">В мене є акаунт</a>
+      <a href = "/" class = "link">Додому</a> 
+    </nav>
+    {% endblock %}
+
+    {% block messages%}
+    <div class="messages" id="hidden-div" style="visibility: hidden; opacity: 0;">
+        <div class="alert">
+          <p id="texto"></p>
+        </div>
+      </div>
+    {% endblock %}
+
+<main class ="main-register">
+    {% if form.errors %}
+      {% for field in form %}
+           {% for error in field.errors %}
+                <script type = "text/javascript" src="{% static 'main/update.js'%}"></script>
+                <script>
+                    FbotonOn("{{ error|escape }}")
+                </script>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+    
+<form class="register-form" action="/register/" method="POST">
+    
+    <h2>Реєстрація</h2>
+    {% csrf_token %}
+       {% render_field form.username placeholder="Логін" autocomplete="off" class+="register-field" id="reg-username" %}
+       {% render_field form.password1 placeholder="Пароль" autocomplete="off" class+="register-field" id="reg-password" %}
+       {% render_field form.password2 placeholder="Підтвердіть пароль" autocomplete="off" class+="register-field"  id="reg-password-two" %}
+    <button type="submit" class ="register-button" id="register-button-msg">Зареєструватись</button>
+</form>
+</main>
+{% endblock %}
+
+
+
+
+
